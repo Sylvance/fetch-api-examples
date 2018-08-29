@@ -1,12 +1,3 @@
-// let token = localStorage.getItem('token')
-// let app = document.getElementById('root')
-let form = document.getElementById('create-post')
-
-if (form) {
-    form.addEventListener("submit", createPost);
-}
-
-
 function makeElement(id, name, parentId, elementType, template){
     elem = document.createElement(elementType);
     elem.innerHTML = `id: ${id} <br /> repo-name: ${name} <br /> <br />`
@@ -35,21 +26,25 @@ function getRepos() {
     });
 }
 
-function createPost(event) {
-    event.preventDefault();
+function createPost() {
+    console.log('Posting..')
+    var data = {
+        "title": document.getElementById('title'),
+        "userId": document.getElementById('userId'),
+        "body": document.getElementById('body')
+    }
     fetch("https://jsonplaceholder.typicode.com/posts", {
         method: "POST",
         mode: "cors",
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
-            // "Authorization": token
+            "Content-type": "application/json;"
         },
-        body: new FormData(form)
+        body: JSON.stringify(data)
     })
     .then((res) => {
         res.json().then((data) => {
             console.log(data);
-            makeElement(data.id, app, 'div');
+            makeElement(data.id, 'reponse', 'root', 'div');
         });
     })
     .catch((err) => {
